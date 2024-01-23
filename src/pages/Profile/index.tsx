@@ -51,7 +51,6 @@ const Profile = () => {
   return (
     <>
       <Header />
-
     </>
   )
 }

@@ -1,5 +1,3 @@
 export const Dish = () => {
-    <div>
-
-    </div>
+  ;<div></div>
 }
