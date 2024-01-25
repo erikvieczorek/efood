@@ -1,14 +1,14 @@
 import Restaurants from '../../models/restaurants'
 import Restaurant from '../Restaurant'
-import { Container, List } from './styles'
+import { List } from './styles'
 
-export type Props = {
+type Props = {
   title: string
   restaurants: Restaurants[]
 }
 
 const RestaurantsList = ({ restaurants }: Props) => (
-  <Container className="container">
+  <section className="container">
     <List>
       {restaurants.map((restaurant) => (
         <Restaurant
@@ -19,11 +19,10 @@ const RestaurantsList = ({ restaurants }: Props) => (
           highlight={restaurant.highlight}
           rate={restaurant.rate}
           title={restaurant.title}
-          banner={restaurant.banner}
         />
       ))}
     </List>
-  </Container>
+  </section>
 )
 
 export default RestaurantsList

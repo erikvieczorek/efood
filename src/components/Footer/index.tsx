@@ -1,32 +1,32 @@
 import { Link } from 'react-router-dom'
-import { Container, SocialMediaLink, SocialMediaLinks } from './styles'
+import * as S from './styles'
 import efood_logo from '../../assets/images/efood_logo.png'
 import facebookLogo from '../../assets/images/social_medias/facebook.svg'
 import instagramLogo from '../../assets/images/social_medias/instagram.svg'
 import twitterLogo from '../../assets/images/social_medias/twitter.svg'
 
 const Footer = () => (
-  <Container>
+  <S.Container>
     <Link to="/">
       <img src={efood_logo} alt="EFOOD" />
     </Link>
-    <SocialMediaLinks>
-      <SocialMediaLink>
+    <S.SocialMediaLinks>
+      <S.SocialMediaLink>
         <img src={instagramLogo} alt="Instagram Logo" />
-      </SocialMediaLink>
-      <SocialMediaLink>
+      </S.SocialMediaLink>
+      <S.SocialMediaLink>
         <img src={facebookLogo} alt="Facebook Logo" />
-      </SocialMediaLink>
-      <SocialMediaLink>
+      </S.SocialMediaLink>
+      <S.SocialMediaLink>
         <img src={twitterLogo} alt="Twitter Logo" />
-      </SocialMediaLink>
-    </SocialMediaLinks>
+      </S.SocialMediaLink>
+    </S.SocialMediaLinks>
     <p>
       A efood é uma plataforma para divulgação de estabelecimentos, a
       responsabilidade pela entrega, qualidade dos produtos é toda do
       estabelecimento contratado.
     </p>
-  </Container>
+  </S.Container>
 )
 
 export default Footer

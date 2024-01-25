@@ -8,7 +8,6 @@ type Props = {
   category: string
   description: string
   image: string
-  banner: string
   highlight: boolean
   rate: number
 }
@@ -37,7 +36,7 @@ const Restaurant = ({
         </S.Rate>
       </S.Title>
       <S.Description>{description}</S.Description>
-      <Link to="/">
+      <Link to="/profile">
         <Tag size="big">Saiba mais</Tag>
       </Link>
     </S.About>

@@ -5,7 +5,6 @@ import backgroundVector from '../../assets/images/Vector.png'
 export const Container = styled.div`
   background-color: ${colors.lightSalmon};
   height: 384px;
-  top: -24px;
   max-height: 100%;
   text-align: center;
   padding-top: 40px;

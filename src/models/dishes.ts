@@ -1,4 +1,4 @@
-class Dish {
+class Dishes {
   id: number
   image: string
   title: string
@@ -12,4 +12,4 @@ class Dish {
   }
 }
 
-export default Dish
+export default Dishes
