@@ -3,16 +3,16 @@ import backgroundVector from '../../assets/images/Vector.png'
 import { colors } from '../../styles '
 
 export const HeaderBar = styled.ul`
-  background-image: url(${backgroundVector});
   height: 186px;
+  background-image: url(${backgroundVector});
 `
 
 export const Container = styled.div`
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
+  align-items: center;
   height: 100%;
   padding-bottom: 43px;
-  align-items: center;
 `
 
 export const LinkItem = styled.li`

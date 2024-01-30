@@ -1,5 +1,5 @@
+import { Dishes } from '../../pages/Profile'
 import Dish from '../Dish'
-import Dishes from '../../models/dishes'
 import { List } from './styles'
 
 type Props = {
@@ -9,12 +9,16 @@ type Props = {
 const DishesList = ({ dishes }: Props) => (
   <List className="container">
     {dishes.map((dish) => (
-      <Dish
-        key={dish.id}
-        description={dish.description}
-        image={dish.image}
-        title={dish.title}
-      />
+      <li key={dish.id}>
+        <Dish
+          id={dish.id}
+          descricao={dish.descricao}
+          foto={dish.foto}
+          nome={dish.nome}
+          preco={dish.preco}
+          porcao={dish.porcao}
+        />
+      </li>
     ))}
   </List>
 )
