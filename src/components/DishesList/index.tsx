@@ -1,5 +1,5 @@
 import { Dishes } from '../../pages/Profile'
-import Dish from '../Dish'
+import Dish from '../DishCard'
 import { List } from './styles'
 
 type Props = {

@@ -15,9 +15,9 @@ export const TitleContainer = styled.div`
 export const Title = styled.h2`
   position: absolute;
   margin-top: 214px;
-  line-height: 37px;
   font-size: 32px;
   font-weight: 900;
+  line-height: 37px;
 `
 export const Category = styled.h3`
   position: absolute;
