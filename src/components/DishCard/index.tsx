@@ -1,15 +1,9 @@
 import { useState } from 'react'
+import { useDispatch } from 'react-redux'
+import { add, open } from '../../store/reducers/cart'
 import * as S from './styles'
 import closeIcon from '../../assets/images/icons/close.svg'
-
-type Props = {
-  foto: string
-  preco: number
-  id: number
-  nome: string
-  descricao: string
-  porcao: string
-}
+import { Dishes } from '../../pages/Profile'
 
 type ModalState = {
   isVisible: boolean
@@ -22,7 +16,13 @@ export const priceFormat = (preco = 0) => {
   }).format(preco)
 }
 
-const Dish = ({ foto, nome, descricao, porcao, preco }: Props) => {
+const DishCard = (dish: Dishes) => {
+  const dispatch = useDispatch()
+
+  const addToCart = () => {
+    dispatch(add(dish))
+    dispatch(open())
+  }
   const [modal, setModal] = useState<ModalState>({
     isVisible: false
   })
@@ -44,9 +44,9 @@ const Dish = ({ foto, nome, descricao, porcao, preco }: Props) => {
     <>
       <S.Card>
         <S.About>
-          <S.Image style={{ backgroundImage: `url(${foto})` }}></S.Image>
-          <S.Title>{nome}</S.Title>
-          <S.Description>{getDescription(descricao)}</S.Description>
+          <S.Image style={{ backgroundImage: `url(${dish.foto})` }}></S.Image>
+          <S.Title>{dish.nome}</S.Title>
+          <S.Description>{getDescription(dish.descricao)}</S.Description>
           <S.LinkCart
             onClick={() => {
               setModal({
@@ -67,14 +67,14 @@ const Dish = ({ foto, nome, descricao, porcao, preco }: Props) => {
               }}
             />
             <div>
-              <img src={foto} alt="Foto do prato" />
+              <img src={dish.foto} alt="Foto do prato" />
             </div>
             <div>
-              <S.Title>{nome}</S.Title>
-              <S.Description>{descricao}</S.Description>
-              <S.Description>Serve: de {porcao}</S.Description>
-              <S.LinkCart>
-                Adicionar ao carrinho - {priceFormat(preco)}
+              <S.Title>{dish.nome}</S.Title>
+              <S.Description>{dish.descricao}</S.Description>
+              <S.Description>Serve: de {dish.porcao}</S.Description>
+              <S.LinkCart onClick={addToCart}>
+                Adicionar ao carrinho - {priceFormat(dish.preco)}
               </S.LinkCart>
             </div>
           </S.ModalContent>
@@ -90,4 +90,4 @@ const Dish = ({ foto, nome, descricao, porcao, preco }: Props) => {
   )
 }
 
-export default Dish
+export default DishCard

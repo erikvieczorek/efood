@@ -5,6 +5,7 @@ import { List } from './styles'
 type Props = {
   title: string
   restaurants: Restaurant[]
+  id?: string
 }
 
 const RestaurantsList = ({ restaurants }: Props) => (

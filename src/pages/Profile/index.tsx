@@ -1,9 +1,8 @@
-import { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import Header from '../../components/Header'
 import DishesList from '../../components/DishesList'
 import Banner from '../../components/Banner'
-import { Restaurant } from '../Home'
+import { useGetRestaurantPageQuery } from '../../services/api'
 
 export type Dishes = {
   id: number
@@ -16,26 +15,21 @@ export type Dishes = {
 
 const Profile = () => {
   const { id } = useParams()
-  const [dishes, setDishes] = useState<Dishes[]>([])
-  const [restaurants, setRestaurants] = useState<Restaurant>()
+  const { data: restauranteAtual } = useGetRestaurantPageQuery(id ? id : '0')
 
-  useEffect(() => {
-    fetch(`https://fake-api-tau.vercel.app/api/efood/restaurantes/${id}`)
-      .then((res) => res.json())
-      .then((res) => setDishes(res.cardapio))
+  if (!restauranteAtual || !restauranteAtual.cardapio) {
+    return <h3>Carregando...</h3>
+  }
 
-    fetch(`https://fake-api-tau.vercel.app/api/efood/restaurantes/${id}`)
-      .then((res) => res.json())
-      .then((res) => setRestaurants(res))
-  }, [id])
+  const listaProdutosRestaurante: Dishes[] = restauranteAtual.cardapio
 
   return (
     <>
       <Header />
-      {restaurants && <Banner restaurants={restaurants} />}
-      {dishes && <DishesList dishes={dishes} />}
-      {!dishes && <h3>Carregando...</h3>}
-      {!restaurants && <h3>Carregando...</h3>}
+      <Banner restaurants={restauranteAtual} />
+      {listaProdutosRestaurante && (
+        <DishesList dishes={listaProdutosRestaurante} />
+      )}
     </>
   )
 }

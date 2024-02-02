@@ -32,3 +32,6 @@ export const LinkItem = styled.li`
     text-align: end;
   }
 `
+export const CartButton = styled.a`
+  cursor: pointer;
+`
