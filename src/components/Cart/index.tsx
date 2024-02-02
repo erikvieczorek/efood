@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import { useDispatch, useSelector } from 'react-redux'
 import { RootReducer } from '../../store'
 import { close, remove } from '../../store/reducers/cart'
@@ -16,7 +17,7 @@ const Cart = () => {
 
     const getTotalPrice = () => {
         return items.reduce((acumulador, valorAtual) => {
-            return (acumulador += valorAtual.preco!)
+            return (acumulador += valorAtual.preco)
         }, 0)
     }
 
