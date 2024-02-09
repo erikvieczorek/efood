@@ -1,7 +1,6 @@
 import styled from 'styled-components'
 import remove from '../../assets/images/icons/remove.svg'
-import { colors } from '../../styles '
-import { LinkCart } from '../DishCard/styles'
+import { breakpoints, colors } from '../../styles '
 
 export const Overlay = styled.div`
   position: absolute;
@@ -35,8 +34,16 @@ export const Sidebar = styled.aside`
   width: 100%;
   background-color: ${colors.salmon};
 
-  ${LinkCart} {
-    width: 100%;
+  .empty-text {
+    font-size: 14px;
+    font-weight: 700;
+    line-height: 22px;
+    text-align: center;
+    color: ${colors.lightSalmon};
+  }
+
+  @media (max-width: ${breakpoints.tablet}) {
+    width: 70%;
   }
 `
 

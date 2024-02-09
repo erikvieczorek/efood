@@ -1,4 +1,3 @@
-import { Dishes } from '../../pages/Profile'
 import DishCard from '../DishCard'
 import { List } from './styles'
 

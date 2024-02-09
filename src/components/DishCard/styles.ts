@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import { colors } from '../../styles '
+import { breakpoints, colors } from '../../styles '
 
 export const Card = styled.div`
   height: 338px;
@@ -28,17 +28,6 @@ export const Title = styled.h3`
 export const Description = styled.p`
   font-size: 14px;
   line-height: 22px;
-`
-export const LinkCart = styled.button`
-  display: block;
-  text-align: center;
-  padding: 4px;
-  background-color: ${colors.lightSalmon};
-  color: ${colors.salmon};
-  border: none;
-  font-weight: 700;
-  font-size: 14px;
-  cursor: pointer;
 `
 
 export const Modal = styled.div`
@@ -75,11 +64,21 @@ export const ModalContent = styled.div`
   padding: 32px;
   background-color: ${colors.salmon};
 
+  @media (max-width: ${breakpoints.tablet}) {
+    flex-direction: column;
+    height: auto;
+  }
+
   img {
     object-fit: cover;
     width: 280px;
     height: 280px;
     margin-right: 24px;
+
+    @media (max-width: ${breakpoints.tablet}) {
+      margin: 0;
+      width: 100%;
+    }
   }
 
   > img {

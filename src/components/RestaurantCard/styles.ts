@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import { colors } from '../../styles '
+import { breakpoints, colors } from '../../styles '
 
 export const About = styled.div`
   display: flex;
@@ -9,11 +9,19 @@ export const About = styled.div`
   height: 190px;
   border: solid 1px ${colors.salmon};
   border-top: none;
+
+  @media (max-width: ${breakpoints.tablet}) {
+    height: unset;
+  }
 `
 
 export const Card = styled.div`
   width: 472px;
   background-color: ${colors.white};
+
+  @media (max-width: ${breakpoints.desktop}) {
+    width: 100%;
+  }
 `
 
 export const Title = styled.div`
@@ -28,6 +36,10 @@ export const Title = styled.div`
 export const Description = styled.p`
   font-size: 14px;
   line-height: 22px;
+
+  @media (max-width: ${breakpoints.tablet}) {
+    margin-bottom: 10px;
+  }
 `
 export const Infos = styled.div`
   position: absolute;

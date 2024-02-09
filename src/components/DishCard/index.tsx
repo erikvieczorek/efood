@@ -1,19 +1,14 @@
 import { useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { add, open } from '../../store/reducers/cart'
-import * as S from './styles'
+import { parseToBrl } from '../../utils'
 import closeIcon from '../../assets/images/icons/close.svg'
-import { Dishes } from '../../pages/Profile'
+
+import * as S from './styles'
+import Button from '../Button'
 
 type ModalState = {
   isVisible: boolean
-}
-
-export const priceFormat = (preco = 0) => {
-  return new Intl.NumberFormat('pt-BR', {
-    style: 'currency',
-    currency: 'BRL'
-  }).format(preco)
 }
 
 const DishCard = (dish: Dishes) => {
@@ -47,7 +42,9 @@ const DishCard = (dish: Dishes) => {
           <S.Image style={{ backgroundImage: `url(${dish.foto})` }}></S.Image>
           <S.Title>{dish.nome}</S.Title>
           <S.Description>{getDescription(dish.descricao)}</S.Description>
-          <S.LinkCart
+          <Button
+            title="Adicionar ao carrinho"
+            type="button"
             onClick={() => {
               setModal({
                 isVisible: true
@@ -55,7 +52,7 @@ const DishCard = (dish: Dishes) => {
             }}
           >
             Adicionar ao carrinho
-          </S.LinkCart>
+          </Button>
         </S.About>
         <S.Modal className={modal.isVisible ? 'visible' : ''}>
           <S.ModalContent className="container">
@@ -73,9 +70,13 @@ const DishCard = (dish: Dishes) => {
               <S.Title>{dish.nome}</S.Title>
               <S.Description>{dish.descricao}</S.Description>
               <S.Description>Serve: de {dish.porcao}</S.Description>
-              <S.LinkCart onClick={addToCart}>
-                Adicionar ao carrinho - {priceFormat(dish.preco)}
-              </S.LinkCart>
+              <Button
+                type="button"
+                title="Adicionar ao carrinho"
+                onClick={addToCart}
+              >
+                Adicionar ao carrinho - {parseToBrl(dish.preco)}
+              </Button>
             </div>
           </S.ModalContent>
           <div
