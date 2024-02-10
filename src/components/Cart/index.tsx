@@ -32,21 +32,6 @@ const Cart = () => {
         {showCheckout ? (
           <>
             <Checkout />
-            <Button
-              title="Continuar com o pagamento"
-              type="button"
-              variant="secondary"
-            >
-              Continuar com o pagamento
-            </Button>
-            <Button
-              onClick={toggleCheckout}
-              title="Voltar para o carrinho"
-              type="button"
-              variant="secondary"
-            >
-              Voltar para o carrinho
-            </Button>
           </>
         ) : (
           <>
@@ -99,6 +84,7 @@ const Cart = () => {
                   onClick={closeCart}
                   title="Clique aqui para fechar o carrinho"
                   type="button"
+                  variant="secondary"
                 >
                   Fechar
                 </Button>

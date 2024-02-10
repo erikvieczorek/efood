@@ -44,3 +44,5 @@ export const InputGrid = styled.div`
   grid-template-columns: 1fr 1fr;
   column-gap: 34px;
 `
+
+export const Container = styled.div``
