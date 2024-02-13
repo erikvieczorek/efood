@@ -1,7 +1,6 @@
-import { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { RootReducer } from '../../store'
-import { close, remove } from '../../store/reducers/cart'
+import { close, remove, setCurrentStep } from '../../store/reducers/cart'
 import { getTotalPrice, parseToBrl } from '../../utils'
 import Checkout from '../Checkout'
 import * as S from './styles'
@@ -10,8 +9,9 @@ import Button from '../Button'
 const Cart = () => {
   const { isOpen, items } = useSelector((state: RootReducer) => state.cart)
   const dispatch = useDispatch()
-
-  const [showCheckout, setShowCheckout] = useState(false)
+  const currentStep = useSelector(
+    (state: RootReducer) => state.cart.currentStep
+  )
 
   const closeCart = () => {
     dispatch(close())
@@ -21,19 +21,15 @@ const Cart = () => {
     dispatch(remove(id))
   }
 
-  const toggleCheckout = () => {
-    setShowCheckout((prevState) => !prevState)
+  const handleNavigation = (step: string) => {
+    dispatch(setCurrentStep(step))
   }
 
   return (
     <S.CartContainer className={isOpen ? 'is-open' : ''}>
       <S.Overlay onClick={closeCart} />
       <S.Sidebar>
-        {showCheckout ? (
-          <>
-            <Checkout />
-          </>
-        ) : (
+        {currentStep === 'CART' && (
           <>
             <h2>Carrinho</h2>
             {items.length > 0 ? (
@@ -55,10 +51,10 @@ const Cart = () => {
                 </ul>
                 <S.Prices>
                   <span>Valor total</span>
-                  <span>{parseToBrl(getTotalPrice(items))} </span>
+                  <span>{parseToBrl(getTotalPrice(items))}</span>
                 </S.Prices>
                 <Button
-                  onClick={toggleCheckout}
+                  onClick={() => handleNavigation('CHECKOUT')}
                   title="Clique aqui para continuar com a entrega"
                   type="button"
                   variant="secondary"
@@ -92,6 +88,9 @@ const Cart = () => {
             )}
           </>
         )}
+        {currentStep === 'CHECKOUT' && <Checkout />}
+        {currentStep === 'PAYMENT' && <Checkout />}
+        {currentStep === 'COMPLETION' && <Checkout />}
       </S.Sidebar>
     </S.CartContainer>
   )
