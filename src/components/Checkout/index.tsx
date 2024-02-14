@@ -1,25 +1,37 @@
+import * as Yup from 'yup'
+import { useFormik } from 'formik'
 import { useDispatch, useSelector } from 'react-redux'
-import { Link } from 'react-router-dom'
-import { RootReducer } from '../../store'
-import InputMask from 'react-input-mask'
 import { useEffect } from 'react'
+import { Link } from 'react-router-dom'
+import { useMask } from '@react-input/mask'
+import { RootReducer } from '../../store'
 import Button from '../Button'
 import * as S from './styles'
 import { clear, close, setCurrentStep } from '../../store/reducers/cart'
 import { usePurchaseMutation } from '../../services/api'
 import { getTotalPrice, parseToBrl } from '../../utils'
-import * as Yup from 'yup'
-import { useFormik } from 'formik'
 
 const Checkout = () => {
   const [purchase, { data, isSuccess, isLoading }] = usePurchaseMutation()
   const { items, currentStep } = useSelector((state: RootReducer) => state.cart)
   const dispatch = useDispatch()
 
-  const handleConcluir = () => {
-    dispatch(close())
-    dispatch(setCurrentStep('CART'))
-  }
+  const deliveryCEPRef = useMask({
+    mask: '_____-___',
+    replacement: { _: /\d/ }
+  })
+  const cardNumberRef = useMask({
+    mask: '____ ____ ____ ____',
+    replacement: { _: /\d/ }
+  })
+  const expiresMonthRef = useMask({
+    mask: '__',
+    replacement: { _: /\d/ }
+  })
+  const expiresYearRef = useMask({
+    mask: '____',
+    replacement: { _: /\d/ }
+  })
 
   const deliveryForm = useFormik({
     initialValues: {
@@ -60,7 +72,8 @@ const Checkout = () => {
         .min(1, 'Insira um mês válido')
         .required('Obrigatório'),
       expiresYear: Yup.number()
-        .min(24, 'Insira um ano válido')
+        .min(2024, 'Insira um ano válido')
+        .max(2050, 'Insira um ano válido')
         .required('Obrigatório'),
       cardCode: Yup.string().min(3, 'Código inválido').required('Obrigatório')
     }),
@@ -119,8 +132,44 @@ const Checkout = () => {
     }
   }, [isSuccess, dispatch])
 
+  useEffect(() => {
+    const fetchCepInfo = async () => {
+      try {
+        const cep = deliveryForm.values.deliveryCEP.replace(/\D/g, '') // Remove caracteres não numéricos
+        if (cep.length === 8) {
+          const response = await fetch(`https://viacep.com.br/ws/${cep}/json/`)
+          if (!response.ok) {
+            throw new Error('Falha ao buscar informações do CEP')
+          }
+          const cepData = await response.json()
+          if (cepData) {
+            deliveryForm.setFieldValue(
+              'deliveryAddress',
+              cepData.logradouro || ''
+            )
+            deliveryForm.setFieldValue('deliveryCity', cepData.localidade || '')
+          }
+        }
+      } catch (error) {
+        console.error('Erro ao buscar informações do CEP:', error)
+        // Lógica de tratamento de erro, se necessário
+      }
+    }
+
+    fetchCepInfo()
+  }, [
+    deliveryForm.values.deliveryCEP,
+    deliveryForm.setFieldValue,
+    deliveryForm
+  ])
+
   const handleNavigation = (step: string) => {
     dispatch(setCurrentStep(step))
+  }
+
+  const handleConcluir = () => {
+    dispatch(close())
+    dispatch(setCurrentStep('CART'))
   }
 
   return (
@@ -223,11 +272,11 @@ const Checkout = () => {
                 <S.InputGrid>
                   <S.InputGroup>
                     <label htmlFor="deliveryCEP">CEP</label>
-                    <InputMask
+                    <input
                       type="text"
                       id="deliveryCEP"
                       name="deliveryCEP"
-                      mask="99.999-999"
+                      ref={deliveryCEPRef}
                       value={deliveryForm.values.deliveryCEP}
                       onChange={deliveryForm.handleChange}
                       onBlur={deliveryForm.handleBlur}
@@ -312,7 +361,7 @@ const Checkout = () => {
                   <span>{parseToBrl(getTotalPrice(items))} </span>
                 </h3>
                 <S.InputGroup>
-                  <label htmlFor="deliveryName">Nome no cartão</label>
+                  <label htmlFor="cardOwner">Nome no cartão</label>
                   <input
                     type="text"
                     id="cardOwner"
@@ -336,6 +385,7 @@ const Checkout = () => {
                       type="text"
                       id="cardNumber"
                       name="cardNumber"
+                      ref={cardNumberRef}
                       value={paymentForm.values.cardNumber}
                       onChange={paymentForm.handleChange}
                       onBlur={paymentForm.handleBlur}
@@ -350,14 +400,13 @@ const Checkout = () => {
                   </S.InputGroup>
                   <S.InputGroup>
                     <label htmlFor="cardCode">CVV</label>
-                    <InputMask
+                    <input
                       type="text"
                       id="cardCode"
                       name="cardCode"
                       value={paymentForm.values.cardCode}
                       onChange={paymentForm.handleChange}
                       onBlur={paymentForm.handleBlur}
-                      mask="999"
                       className={checkPaymentForm('cardCode') ? 'error' : ''}
                     />
                     {paymentForm.errors.cardCode &&
@@ -375,6 +424,8 @@ const Checkout = () => {
                       type="text"
                       id="expiresMonth"
                       name="expiresMonth"
+                      ref={expiresMonthRef}
+                      placeholder="mm"
                       value={paymentForm.values.expiresMonth}
                       onChange={paymentForm.handleChange}
                       onBlur={paymentForm.handleBlur}
@@ -391,14 +442,15 @@ const Checkout = () => {
                   </S.InputGroup>
                   <S.InputGroup>
                     <label htmlFor="expiresYear">Ano de vencimento</label>
-                    <InputMask
+                    <input
                       type="text"
                       id="expiresYear"
                       name="expiresYear"
+                      ref={expiresYearRef}
+                      placeholder="aaaa"
                       value={paymentForm.values.expiresYear}
                       onChange={paymentForm.handleChange}
                       onBlur={paymentForm.handleBlur}
-                      mask="99"
                       className={checkPaymentForm('expiresYear') ? 'error' : ''}
                     />
                     {paymentForm.errors.expiresYear &&

@@ -17,3 +17,16 @@ declare type Dishes = {
   porcao: string
   preco: number
 }
+
+declare type CepData = {
+  cep: string
+  logradouro: string
+  complemento: string
+  bairro: string
+  localidade: string
+  uf: string
+  ibge: string
+  gia: string
+  ddd: string
+  siafi: string
+}

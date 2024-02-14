@@ -11,11 +11,7 @@ export const Container = styled.div`
   background-image: url(${backgroundVector});
 
   @media (max-width: ${breakpoints.tablet}) {
-    height: 160px;
-
-    img {
-      width: 20%;
-    }
+    height: 168px;
   }
 `
 
