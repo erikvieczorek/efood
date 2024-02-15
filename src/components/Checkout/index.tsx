@@ -1,19 +1,23 @@
 import * as Yup from 'yup'
 import { useFormik } from 'formik'
 import { useDispatch, useSelector } from 'react-redux'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { useMask } from '@react-input/mask'
-import { RootReducer } from '../../store'
+
 import Button from '../Button'
-import * as S from './styles'
-import { clear, close, setCurrentStep } from '../../store/reducers/cart'
+
 import { usePurchaseMutation } from '../../services/api'
+import { RootReducer } from '../../store'
+import { clear, close, setCurrentStep } from '../../store/reducers/cart'
+
 import { getTotalPrice, parseToBrl } from '../../utils'
+import * as S from './styles'
 
 const Checkout = () => {
   const [purchase, { data, isSuccess, isLoading }] = usePurchaseMutation()
   const { items, currentStep } = useSelector((state: RootReducer) => state.cart)
+  const [cepError, setCepError] = useState('')
   const dispatch = useDispatch()
 
   const deliveryCEPRef = useMask({
@@ -33,6 +37,11 @@ const Checkout = () => {
     replacement: { _: /\d/ }
   })
 
+  const cardCodeRef = useMask({
+    mask: '___',
+    replacement: { _: /\d/ }
+  })
+
   const deliveryForm = useFormik({
     initialValues: {
       deliveryName: '',
@@ -46,7 +55,14 @@ const Checkout = () => {
       deliveryName: Yup.string()
         .min(5, 'Digite seu nome completo')
         .required('Obrigatório'),
-      deliveryCEP: Yup.string().required('Obrigatório'),
+      deliveryCEP: Yup.string()
+        .test('cep-validation', 'CEP inválido', () => {
+          if (cepError) {
+            return false
+          }
+          return true
+        })
+        .required('Obrigatório'),
       deliveryNumber: Yup.number().required('Obrigatório')
     }),
     onSubmit: () => {
@@ -127,32 +143,31 @@ const Checkout = () => {
   }
 
   useEffect(() => {
-    if (isSuccess) {
-      dispatch(clear())
-    }
-  }, [isSuccess, dispatch])
-
-  useEffect(() => {
     const fetchCepInfo = async () => {
       try {
-        const cep = deliveryForm.values.deliveryCEP.replace(/\D/g, '') // Remove caracteres não numéricos
+        const cep = deliveryForm.values.deliveryCEP.replace(/\D/g, '')
         if (cep.length === 8) {
-          const response = await fetch(`https://viacep.com.br/ws/${cep}/json/`)
+          const response = await fetch(`https://opencep.com/v1/${cep}.json`)
           if (!response.ok) {
             throw new Error('Falha ao buscar informações do CEP')
           }
           const cepData = await response.json()
-          if (cepData) {
+          if (cepData && cepData.logradouro) {
             deliveryForm.setFieldValue(
               'deliveryAddress',
               cepData.logradouro || ''
             )
             deliveryForm.setFieldValue('deliveryCity', cepData.localidade || '')
+            setCepError('')
+          } else {
+            setCepError('CEP inválido')
           }
+        } else {
+          setCepError('CEP inválido')
         }
       } catch (error) {
         console.error('Erro ao buscar informações do CEP:', error)
-        // Lógica de tratamento de erro, se necessário
+        setCepError('Erro ao buscar informações do CEP')
       }
     }
 
@@ -162,6 +177,12 @@ const Checkout = () => {
     deliveryForm.setFieldValue,
     deliveryForm
   ])
+
+  useEffect(() => {
+    if (isSuccess) {
+      dispatch(clear())
+    }
+  }, [isSuccess, dispatch])
 
   const handleNavigation = (step: string) => {
     dispatch(setCurrentStep(step))
@@ -404,6 +425,7 @@ const Checkout = () => {
                       type="text"
                       id="cardCode"
                       name="cardCode"
+                      ref={cardCodeRef}
                       value={paymentForm.values.cardCode}
                       onChange={paymentForm.handleChange}
                       onBlur={paymentForm.handleBlur}

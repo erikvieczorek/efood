@@ -1,8 +1,11 @@
 import { Link } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
+
+import efood_logo from '../../assets/images/efood_logo.png'
+
 import { RootReducer } from '../../store'
 import { open } from '../../store/reducers/cart'
-import efood_logo from '../../assets/images/efood_logo.png'
+
 import * as S from './styles'
 
 const Header = () => {

@@ -1,10 +1,13 @@
 import { useDispatch, useSelector } from 'react-redux'
+
+import Checkout from '../Checkout'
+import Button from '../Button'
+
 import { RootReducer } from '../../store'
 import { close, remove, setCurrentStep } from '../../store/reducers/cart'
+
 import { getTotalPrice, parseToBrl } from '../../utils'
-import Checkout from '../Checkout'
 import * as S from './styles'
-import Button from '../Button'
 
 const Cart = () => {
   const { isOpen, items } = useSelector((state: RootReducer) => state.cart)

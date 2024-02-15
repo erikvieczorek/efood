@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import { breakpoints, colors } from '../../styles '
+import { colors } from '../../styles '
 
 export const BannerContainer = styled.div`
   margin-bottom: 56px;
@@ -14,14 +14,14 @@ export const TitleContainer = styled.div`
 
 export const Title = styled.h2`
   position: absolute;
-  margin-top: 214px;
+  bottom: 32px;
   font-size: 32px;
   font-weight: 900;
   line-height: 37px;
 `
 export const Category = styled.h3`
   position: absolute;
-  margin-top: 24px;
+  top: 24px;
   font-size: 32px;
   font-weight: 100;
   line-height: 37px;

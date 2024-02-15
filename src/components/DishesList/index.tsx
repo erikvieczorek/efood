@@ -1,4 +1,5 @@
 import DishCard from '../DishCard'
+import Loader from '../Loader'
 import { List } from './styles'
 
 type Props = {
@@ -7,7 +8,7 @@ type Props = {
 
 const DishesList = ({ dishes }: Props) => {
   if (!dishes) {
-    return <h3>Carregando...</h3>
+    return <Loader />
   }
 
   return (

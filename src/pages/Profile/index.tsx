@@ -1,7 +1,9 @@
 import { useParams } from 'react-router-dom'
+
 import Header from '../../components/Header'
 import DishesList from '../../components/DishesList'
 import Banner from '../../components/Banner'
+import Loader from '../../components/Loader'
 import { useGetRestaurantPageQuery } from '../../services/api'
 
 const Profile = () => {
@@ -9,7 +11,7 @@ const Profile = () => {
   const { data: restauranteAtual } = useGetRestaurantPageQuery(id ? id : '0')
 
   if (!restauranteAtual || !restauranteAtual.cardapio) {
-    return <h3>Carregando...</h3>
+    return <Loader />
   }
 
   const listaProdutosRestaurante: Dishes[] = restauranteAtual.cardapio

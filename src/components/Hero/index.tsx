@@ -1,5 +1,7 @@
 import { Link } from 'react-router-dom'
+
 import efood_logo from '../../assets/images/efood_logo.png'
+
 import * as S from './styles'
 
 const Hero = () => (

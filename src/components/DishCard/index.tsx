@@ -1,11 +1,13 @@
 import { useState } from 'react'
 import { useDispatch } from 'react-redux'
+
+import Button from '../Button'
+
 import { add, open } from '../../store/reducers/cart'
-import { parseToBrl } from '../../utils'
 import closeIcon from '../../assets/images/icons/close.svg'
 
+import { parseToBrl } from '../../utils'
 import * as S from './styles'
-import Button from '../Button'
 
 type ModalState = {
   isVisible: boolean

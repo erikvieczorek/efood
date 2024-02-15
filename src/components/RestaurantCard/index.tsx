@@ -1,7 +1,9 @@
 import { Link } from 'react-router-dom'
+
 import Tag from '../Tag'
-import * as S from './styles'
 import star_favorite from '../../assets/images/icons/star_favorite.svg'
+
+import * as S from './styles'
 
 type Props = {
   titulo: string
