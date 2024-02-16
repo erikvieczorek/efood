@@ -27,6 +27,13 @@ export const CartContainer = styled.div`
   }
 `
 
+export const CartList = styled.ul`
+  @media (max-width: ${breakpoints.tablet}) {
+    max-height: 64vh;
+    overflow-y: scroll;
+  }
+`
+
 export const Sidebar = styled.aside`
   z-index: 1;
   padding: 32px 8px 0 8px;
@@ -62,6 +69,7 @@ export const CartItem = styled.li`
   position: relative;
   padding: 8px 0 12px 8px;
   height: 100px;
+  max-height: 100%;
   background-color: ${colors.lightSalmon};
   margin-bottom: 8px;
 
@@ -76,6 +84,10 @@ export const CartItem = styled.li`
     margin-bottom: 16px;
     font-size: 18px;
     font-weight: 900;
+
+    @media (max-width: ${breakpoints.tablet}) {
+      font-size: 14px;
+    }
   }
 
   span {

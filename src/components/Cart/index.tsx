@@ -37,7 +37,7 @@ const Cart = () => {
             <h2>Carrinho</h2>
             {items.length > 0 ? (
               <>
-                <ul>
+                <S.CartList>
                   {items.map((item) => (
                     <S.CartItem key={item.id}>
                       <img src={item.foto} alt={item.foto} />
@@ -51,7 +51,7 @@ const Cart = () => {
                       />
                     </S.CartItem>
                   ))}
-                </ul>
+                </S.CartList>
                 <S.Prices>
                   <span>Valor total</span>
                   <span>{parseToBrl(getTotalPrice(items))}</span>

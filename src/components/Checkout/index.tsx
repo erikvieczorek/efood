@@ -33,7 +33,7 @@ const Checkout = () => {
     replacement: { _: /\d/ }
   })
   const expiresYearRef = useMask({
-    mask: '____',
+    mask: '__',
     replacement: { _: /\d/ }
   })
 
@@ -55,6 +55,8 @@ const Checkout = () => {
       deliveryName: Yup.string()
         .min(5, 'Digite seu nome completo')
         .required('Obrigatório'),
+      deliveryAddress: Yup.string().required('Obrigatório'),
+      deliveryCity: Yup.string().required('Obrigatório'),
       deliveryCEP: Yup.string()
         .test('cep-validation', 'CEP inválido', () => {
           if (cepError) {
@@ -88,8 +90,8 @@ const Checkout = () => {
         .min(1, 'Insira um mês válido')
         .required('Obrigatório'),
       expiresYear: Yup.number()
-        .min(2024, 'Insira um ano válido')
-        .max(2050, 'Insira um ano válido')
+        .min(24, 'Insira um ano válido')
+        .max(50, 'Insira um ano válido')
         .required('Obrigatório'),
       cardCode: Yup.string().min(3, 'Código inválido').required('Obrigatório')
     }),
@@ -126,20 +128,20 @@ const Checkout = () => {
     }
   })
 
-  const checkDeliveryForm = (fieldName: string, message?: string) => {
+  const checkDeliveryForm = (fieldName: string) => {
     const isTouched = fieldName in deliveryForm.touched
     const isInvalid = fieldName in deliveryForm.errors
     const hasError = isTouched && isInvalid
 
-    return hasError ? message : ''
+    return hasError
   }
 
-  const checkPaymentForm = (fieldName: string, message?: string) => {
+  const checkPaymentForm = (fieldName: string) => {
     const isTouched = fieldName in paymentForm.touched
     const isInvalid = fieldName in paymentForm.errors
     const hasError = isTouched && isInvalid
 
-    return hasError ? message : ''
+    return hasError
   }
 
   useEffect(() => {
@@ -469,7 +471,7 @@ const Checkout = () => {
                       id="expiresYear"
                       name="expiresYear"
                       ref={expiresYearRef}
-                      placeholder="aaaa"
+                      placeholder="aa"
                       value={paymentForm.values.expiresYear}
                       onChange={paymentForm.handleChange}
                       onBlur={paymentForm.handleBlur}
