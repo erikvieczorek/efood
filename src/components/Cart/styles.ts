@@ -29,11 +29,11 @@ export const CartContainer = styled.div`
 
 export const CartList = styled.ul`
   max-height: 74vh;
-  overflow-y: scroll;
+  overflow-y: auto;
 
   @media (max-width: ${breakpoints.tablet}) {
     max-height: 64vh;
-    overflow-y: scroll;
+    overflow-y: auto;
   }
 `
 
