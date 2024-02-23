@@ -58,12 +58,12 @@ const Checkout = () => {
       deliveryAddress: Yup.string().required('Obrigatório'),
       deliveryCity: Yup.string().required('Obrigatório'),
       deliveryCEP: Yup.string()
-        .test('cep-validation', 'CEP inválido', () => {
-          if (cepError) {
-            return false
-          }
-          return true
-        })
+        // .test('cep-validation', 'CEP inválido', () => {
+        //   if (cepError) {
+        //     return false
+        //   }
+        //   return true
+        // })
         .required('Obrigatório'),
       deliveryNumber: Yup.number().required('Obrigatório')
     }),
