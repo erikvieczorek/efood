@@ -28,6 +28,7 @@ export const InputGroup = styled.div`
     border: none;
     padding: 6px;
     background-color: ${colors.lightSalmon};
+    font-weight: 700;
 
     &.error {
       border: 2px solid #ffd700;
