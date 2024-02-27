@@ -1,7 +1,7 @@
 import * as Yup from 'yup'
 import { useFormik } from 'formik'
 import { useDispatch, useSelector } from 'react-redux'
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { useMask } from '@react-input/mask'
 
@@ -17,7 +17,6 @@ import * as S from './styles'
 const Checkout = () => {
   const [purchase, { data, isSuccess, isLoading }] = usePurchaseMutation()
   const { items, currentStep } = useSelector((state: RootReducer) => state.cart)
-  const [cepError, setCepError] = useState('')
   const dispatch = useDispatch()
 
   const deliveryCEPRef = useMask({
@@ -57,14 +56,7 @@ const Checkout = () => {
         .required('Obrigatório'),
       deliveryAddress: Yup.string().required('Obrigatório'),
       deliveryCity: Yup.string().required('Obrigatório'),
-      deliveryCEP: Yup.string()
-        // .test('cep-validation', 'CEP inválido', () => {
-        //   if (cepError) {
-        //     return false
-        //   }
-        //   return true
-        // })
-        .required('Obrigatório'),
+      deliveryCEP: Yup.string().min(9, 'CEP inválido').required('Obrigatório'),
       deliveryNumber: Yup.number().required('Obrigatório')
     }),
     onSubmit: () => {
@@ -160,16 +152,10 @@ const Checkout = () => {
               cepData.logradouro || ''
             )
             deliveryForm.setFieldValue('deliveryCity', cepData.localidade || '')
-            setCepError('')
-          } else {
-            setCepError('CEP inválido')
           }
-        } else {
-          setCepError('CEP inválido')
         }
       } catch (error) {
         console.error('Erro ao buscar informações do CEP:', error)
-        setCepError('Erro ao buscar informações do CEP')
       }
     }
 
